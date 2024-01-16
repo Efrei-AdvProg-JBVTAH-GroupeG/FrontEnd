@@ -1,0 +1,21 @@
+.roleSelect{
+    color: white;
+}
+
+.inputSignUp{
+        background-color: rgb(155, 155, 201) ;
+        border-radius: 2vh;
+        border: 0.1;
+        border-color: white;
+        color: white;
+        width: 15vw;
+        height: 5vh;
+        text-align: center;
+}
+
+.inputSignUp::placeholder{
+          color:white;
+        }
+
+    
+      
