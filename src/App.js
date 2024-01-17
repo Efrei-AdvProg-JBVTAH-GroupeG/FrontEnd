@@ -1,22 +1,40 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavBar from "./component/NavBar";
 import "./App.css";
-//import Login from "./component/login";
 import AuthPage from "./component/AuthPage";
 import UploadPage from "./component/UploadPage";
+import { AuthProvider } from "./component/AuthContext";
+import ProtectedRoute from "./component/ProtectedRoute";
+import UserProfile from "./component/UserProfile";
 
 function App() {
   return (
-    <div className="App">
-      <Router>
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<AuthPage />} />
-
-          <Route path="/upload" component={UploadPage} />
-        </Routes>
-      </Router>
-    </div>
+    <AuthProvider>
+      <div className="App">
+        <Router>
+          <NavBar />
+          <Routes>
+            <Route path="/" element={<AuthPage />} />
+            <Route
+              path="/upload"
+              element={
+                <ProtectedRoute>
+                  <UploadPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <UserProfile />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </Router>
+      </div>
+    </AuthProvider>
   );
 }
 

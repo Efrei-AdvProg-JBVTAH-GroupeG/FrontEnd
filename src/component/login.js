@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "./login.css";
+import { useAuth } from "./AuthContext";
 
 const Login = () => {
+  const { isAuthenticated, login } = useAuth();
   const [userData, setUserData] = useState({
     username: "",
     password: "",
@@ -21,6 +23,9 @@ const Login = () => {
     try {
       const response = await signIn(userData);
 
+      login(response);
+
+      console.log("Signup Successful:", userData);
       console.log("Signup Successful:", response);
     } catch (error) {
       console.error("Signup Failed:", error.message);
@@ -50,6 +55,10 @@ const Login = () => {
       console.error("There was a problem with the fetch operation:", error);
     }
   };
+
+  if (isAuthenticated) {
+    return <div className="loginContainer">Vous êtes connecté</div>;
+  }
 
   return (
     <form onSubmit={handleSubmit}>

@@ -19,6 +19,7 @@ const FileUploadPage = () => {
       <header style={{ marginBottom: "20px" }}>
         <h1>Upload Page</h1>
       </header>
+
       <div
         {...getRootProps()}
         style={{

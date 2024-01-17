@@ -27,6 +27,15 @@ const NavBar = () => {
               Upload Page
             </NavLink>
           </div>
+          <div className="Links">
+            <NavLink
+              id="home"
+              style={{ textDecoration: "none", color: "white" }}
+              to="/profile"
+            >
+              Mon Profile
+            </NavLink>
+          </div>
         </div>
       </div>
     </div>
