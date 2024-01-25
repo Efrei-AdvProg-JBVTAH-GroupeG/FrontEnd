@@ -1,13 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./login.css";
 import { useAuth } from "./AuthContext";
 
 const Login = () => {
-  const { isAuthenticated, login } = useAuth();
+  const { login } = useAuth();
   const [userData, setUserData] = useState({
     username: "",
     password: "",
   });
+
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true"
+  );
+
+  useEffect(() => {
+    // Update localStorage when isLoggedIn changes
+    localStorage.setItem("isLoggedIn", isLoggedIn);
+  }, [isLoggedIn]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,10 +32,12 @@ const Login = () => {
     try {
       const response = await signIn(userData);
 
-      login(response);
+      if (response) {
+        setIsLoggedIn(true);
+        login(response);
 
-      console.log("Signup Successful:", userData);
-      console.log("Signup Successful:", response);
+        console.log("Login Successful:", response);
+      }
     } catch (error) {
       console.error("Signup Failed:", error.message);
     }
@@ -56,7 +67,7 @@ const Login = () => {
     }
   };
 
-  if (isAuthenticated) {
+  if (isLoggedIn) {
     return <div className="loginContainer">Vous êtes connecté</div>;
   }
 
