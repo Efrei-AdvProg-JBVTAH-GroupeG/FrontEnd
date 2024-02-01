@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavBar from "./component/NavBar";
 import "./App.css";
-import AuthPage from "./component/AuthPage";
-import UploadPage from "./component/UploadPage";
-import { AuthProvider } from "./component/AuthContext";
+import AuthPage from "./auth/AuthPage";
+import UploadPage from "./page/UploadPage";
+import { AuthProvider } from "./auth/AuthContext";
 import ProtectedRoute from "./component/ProtectedRoute";
-import UserProfile from "./component/UserProfile";
+import UserProfile from "./page/UserProfile";
 
 function App() {
   return (

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./SignUp.css";
+import "../style/SignUp.css";
 
 const SignUp = () => {
   // const roleOptions = ["Admin", "Élève", "Professeur"];

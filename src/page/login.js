@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./login.css";
-import { useAuth } from "./AuthContext";
+import "../style/login.css";
+import { useAuth } from "../auth/AuthContext";
 
 const Login = () => {
   const { login } = useAuth();

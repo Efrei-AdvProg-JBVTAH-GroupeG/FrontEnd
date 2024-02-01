@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Login from "./login";
-import SignUp from "./SignUp";
+import Login from "../page/login";
+import SignUp from "../page/SignUp";
 import { useAuth } from "./AuthContext";
 
 const AuthPage = () => {
