@@ -58,7 +58,7 @@ const FileUploadPage = () => {
       const result = await response.json();
       console.log("Upload successful:", result);
       alert("File(s) uploaded successfully!");
-      setFiles([]); // Clear the list after upload
+      setFiles([]);
     } catch (error) {
       console.error("Upload failed:", error);
       alert("Failed to upload file(s).");
@@ -100,5 +100,3 @@ const FileUploadPage = () => {
 };
 
 export default FileUploadPage;
-
-// http://document.thibaulthenrion.com/uploadFile

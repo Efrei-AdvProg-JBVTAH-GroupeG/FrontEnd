@@ -8,7 +8,7 @@
 .Main_Container {
     display: flex;
     flex-direction: row;
-    background-color: rgb(106, 106, 147);
+    background-color: rgb(59, 59, 93);
     height: 6vh;
     border-radius: 8vh;
     margin-top: 2vh;
@@ -20,32 +20,40 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
+    width: 100%;
+    padding: 0 2vh; 
+  }
+  
 
-.MyName {
-    font-family: 'Roboto', sans-serif;
-    font-size: 20px;
-    color: white;
-    font-weight: bold;
-    display: flex;
-    justify-content: flex-start;
-    margin-left: 4vh;
-}
 
-.Links{
+
+.Links {
     display: flex;
     justify-content: flex-end;
     font-family: 'Roboto', sans-serif;
     margin-left: 2vh;
     height: 100%;
     align-items: center;
-}
+    margin-right: 2vh; 
+  }
+  
 
 
 .Links:hover{
     color: #85A968;
     font-weight: bold;
     cursor: pointer;
-    background-color: rgb(152, 152, 185);
     border-radius: 2vh;
+    transform: scale(1.2);
 }
+
+.Logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .LogoImage {
+    width: 7vw; 
+    height: auto;
+    margin-right: 2vh;
+  }

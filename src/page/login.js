@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
 import "../style/login.css";
 import { useAuth } from "../auth/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [userData, setUserData] = useState({
     username: "",
     password: "",
   });
 
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("isLoggedIn") === "true"
-  );
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Update localStorage when isLoggedIn changes
-    localStorage.setItem("isLoggedIn", isLoggedIn);
-  }, [isLoggedIn]);
+    if (isAuthenticated) {
+      setIsLoggedIn(true);
+      navigate("/profile");
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,6 +39,7 @@ const Login = () => {
         login(response);
 
         console.log("Login Successful:", response);
+        navigate("/profile");
       }
     } catch (error) {
       console.error("Signup Failed:", error.message);
