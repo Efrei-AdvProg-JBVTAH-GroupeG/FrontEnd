@@ -1,0 +1,75 @@
+/* FileUploadPage.css */
+
+.containerUpload {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .header {
+    margin-bottom: 20px;
+  }
+  
+  .header h1 {
+    color: #4CAF50;
+  }
+  
+  .dropzone {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+  }
+  
+  .dropzone p {
+    margin: 0;
+    color: #777;
+  }
+  
+  .upload-button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+  }
+  
+  .uploaded-files {
+    color: #4CAF50;
+    margin-top: 20px;
+  }
+  
+  .uploaded-files ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .uploaded-files li {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .uploaded-files span {
+    color: #333;
+    margin-right: 10px;
+  }
+  
+  .delete-button {
+    padding: 4px 8px;
+    cursor: pointer;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin-left: 10px;
+  }
+  

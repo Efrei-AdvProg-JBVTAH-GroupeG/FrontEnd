@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "../style/SignUp.css";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   // const roleOptions = ["Admin", "Élève", "Professeur"];
+  const navigate = useNavigate();
 
   const [userData, setUserData] = useState({
     username: "",
@@ -36,6 +38,8 @@ const SignUp = () => {
 
     try {
       const response = await signUpUser(userData);
+
+      navigate("/profile");
 
       console.log("Signup Successful:", response);
     } catch (error) {

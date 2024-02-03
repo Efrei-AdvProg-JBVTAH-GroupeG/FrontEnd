@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../style/login.css";
 import { useAuth } from "../auth/AuthContext";
 import { useNavigate } from "react-router-dom";
+import HomePage from "./HomePage.js";
 
 const Login = () => {
   const { login, isAuthenticated } = useAuth();
@@ -16,7 +17,7 @@ const Login = () => {
   useEffect(() => {
     if (isAuthenticated) {
       setIsLoggedIn(true);
-      navigate("/profile");
+      navigate("/");
     }
   }, [isAuthenticated, navigate]);
 
@@ -71,7 +72,7 @@ const Login = () => {
   };
 
   if (isLoggedIn) {
-    return <div className="loginContainer">Vous êtes connecté</div>;
+    return <HomePage />;
   }
 
   return (
