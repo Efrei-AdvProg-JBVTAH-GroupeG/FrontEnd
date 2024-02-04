@@ -43,7 +43,7 @@ const UserProfile = () => {
               <span className="info-value">{userData.email}</span>
             </div>
             <div className="info-item">
-              <span className="info-label">Role:</span>
+              <span className="info-label">Rôle:</span>
               <span className="info-value">{displayRoles}</span>
             </div>
           </div>

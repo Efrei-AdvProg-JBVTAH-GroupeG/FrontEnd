@@ -63,3 +63,11 @@
     background-color:rgb(35, 35, 53) ;
     
   }
+
+
+
+.error {
+  color: #ff0000;
+  font-size: 14px;
+  margin-bottom: 10px;
+}

@@ -13,6 +13,7 @@ const Login = () => {
   });
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginError, setLoginError] = useState(null);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -43,7 +44,10 @@ const Login = () => {
         navigate("/profile");
       }
     } catch (error) {
-      console.error("Signup Failed:", error.message);
+      console.error("Login Failed:", error.message);
+      setLoginError(
+        "Nom d'utilisateur ou mot de passe incorrecte. Veuillez recommencer."
+      );
     }
   };
 
@@ -67,7 +71,7 @@ const Login = () => {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
+      throw error;
     }
   };
 
@@ -80,6 +84,9 @@ const Login = () => {
       <div className="loginContainer">
         <div className="MainContainer">
           <h1 className="title">Connexion</h1>
+
+          {loginError && <p className="error">{loginError}</p>}
+
           <div className="inputContainer">
             <label>
               <input
