@@ -51,7 +51,7 @@ const SignUp = () => {
     console.log("Sending userData:", userData);
     try {
       const response = await fetch(
-        "http://connect.thibaulthenrion.com/api/auth/signup",
+          process.env.REACT_APP_AUTH_API_URL+"/auth/signup",
         {
           method: "POST",
           headers: {

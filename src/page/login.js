@@ -54,7 +54,7 @@ const Login = () => {
   const signIn = async (userData) => {
     try {
       const response = await fetch(
-        "http://connect.thibaulthenrion.com/api/auth/signin",
+          process.env.REACT_APP_AUTH_API_URL+"/auth/signin",
         {
           method: "POST",
           headers: {
