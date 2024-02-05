@@ -1,8 +1,10 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import "../style/UploadPage.css";
+import {useAuth} from "../auth/AuthContext";
 
 const FileUploadPage = () => {
+  const { userData } = useAuth();
   const token = localStorage.getItem("token");
   const [files, setFiles] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -12,7 +14,7 @@ const FileUploadPage = () => {
   const fetchUploadedFiles = async () => {
     try {
       const response = await fetch(
-        "http://document.thibaulthenrion.com/listFiles",
+        process.env.REACT_APP_DOCUMENT_API_URL+"/listFiles",
         {
           method: "GET",
           headers: {
@@ -43,6 +45,8 @@ const FileUploadPage = () => {
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
+  const isStudent = userData.roles.includes("ROLE_STUDENT");
+
   const handleUpload = async () => {
     // Check if a file is selected
     if (!files.length) {
@@ -65,7 +69,7 @@ const FileUploadPage = () => {
 
     try {
       const response = await fetch(
-        "http://document.thibaulthenrion.com/uploadFile",
+          process.env.REACT_APP_DOCUMENT_API_URL+"/uploadFile",
         {
           method: "POST",
           headers: {
@@ -96,7 +100,7 @@ const FileUploadPage = () => {
   const handleDelete = async (documentId) => {
     try {
       const response = await fetch(
-        `http://document.thibaulthenrion.com/deleteFile/${documentId}`,
+          process.env.REACT_APP_DOCUMENT_API_URL+`/deleteFile/${documentId}`,
         {
           method: "DELETE",
           headers: {
@@ -123,7 +127,7 @@ const FileUploadPage = () => {
   const handleDownload = async (documentId) => {
     try {
       const response = await fetch(
-        `http://document.thibaulthenrion.com/file/${documentId}`,
+          process.env.REACT_APP_DOCUMENT_API_URL+`/file/${documentId}`,
         {
           method: "GET",
           headers: {
@@ -163,33 +167,34 @@ const FileUploadPage = () => {
       <header className="header">
         <h1>File Upload Page</h1>
       </header>
-      <div className="UploadContainer">
-        <div className="dropzone" {...getRootProps()}>
-          <input {...getInputProps()} />
-          {selectedFileName ? (
-            <p style={{ color: "#333", margin: 0 }}>{selectedFileName}</p>
-          ) : (
-            <p style={{ color: "#777", margin: 0 }}>
-              Drag 'n' drop ici, ou clique pour sélectionner ton fichier
-            </p>
-          )}
+      {isStudent &&
+        <div className="UploadContainer">
+          <div className="dropzone" {...getRootProps()}>
+            <input {...getInputProps()} />
+            {selectedFileName ? (
+              <p style={{ color: "#333", margin: 0 }}>{selectedFileName}</p>
+            ) : (
+              <p style={{ color: "#777", margin: 0 }}>
+                Drag 'n' drop ici, ou clique pour sélectionner ton fichier
+              </p>
+            )}
+          </div>
+
+          <select
+            id="fileType"
+            value={selectedType}
+            onChange={(e) => setSelectedType(e.target.value)}
+          >
+            <option value="">Type de document</option>
+            <option value="Rapport">Rapport</option>
+            <option value="Cdc">CDC</option>
+          </select>
+
+          <button className="upload-button" onClick={handleUpload}>
+            Envoyer
+          </button>
         </div>
-
-        <select
-          id="fileType"
-          value={selectedType}
-          onChange={(e) => setSelectedType(e.target.value)}
-        >
-          <option value="">Type de document</option>
-          <option value="Rapport">Rapport</option>
-          <option value="Cdc">CDC</option>
-        </select>
-
-        <button className="upload-button" onClick={handleUpload}>
-          Envoyer
-        </button>
-      </div>
-
+      }
       <div className="uploaded-files">
         <h2>Fichiers upload:</h2>
         <div className="InfoContainer">
@@ -208,12 +213,14 @@ const FileUploadPage = () => {
                   Télécharger
                 </button>
                 <br />
-                <button
-                  onClick={() => handleDelete(file.id)}
-                  className="delete-button"
-                >
-                  Supprimer
-                </button>
+                {isStudent &&
+                  <button
+                    onClick={() => handleDelete(file.id)}
+                    className="delete-button"
+                  >
+                    Supprimer
+                  </button>
+                }
               </li>
             ))}
           </ul>
