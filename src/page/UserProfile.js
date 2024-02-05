@@ -6,6 +6,7 @@ import Profile from "../asset/logo_profile.webp";
 
 const UserProfile = () => {
   const { userData, logout } = useAuth();
+
   const navigate = useNavigate();
 
   if (!userData) {
@@ -13,8 +14,9 @@ const UserProfile = () => {
   }
 
   const roleMapping = {
-    ROLE_USER: "Élève",
+    ROLE_STUDENT: "Élève",
     ROLE_ADMIN: "Administrateur",
+    ROLE_TUTOR: "Professeur",
   };
 
   const displayRoles = userData.roles
@@ -23,7 +25,6 @@ const UserProfile = () => {
 
   const handleLogout = () => {
     logout();
-
     navigate("/");
   };
 

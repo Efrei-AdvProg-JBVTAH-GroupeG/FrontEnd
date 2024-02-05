@@ -3,22 +3,30 @@ import { useDropzone } from "react-dropzone";
 import "../style/UploadPage.css";
 
 const FileUploadPage = () => {
+  const token = localStorage.getItem("token");
   const [files, setFiles] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [selectedFileName, setSelectedFileName] = useState(null);
+  const [selectedType, setSelectedType] = useState("");
 
   const fetchUploadedFiles = async () => {
     try {
-      const response = await fetch("/listFiles", {
-        method: "GET",
-      });
+      const response = await fetch(
+        "http://document.thibaulthenrion.com/listFiles",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      setUploadedFiles(data.map((file) => ({ name: file })));
+      setUploadedFiles(data); // Assuming data is an array of objects
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
     }
@@ -26,7 +34,7 @@ const FileUploadPage = () => {
 
   useEffect(() => {
     fetchUploadedFiles();
-  }, []);
+  }, [token]);
 
   const onDrop = useCallback((acceptedFiles) => {
     setFiles(acceptedFiles);
@@ -36,47 +44,73 @@ const FileUploadPage = () => {
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   const handleUpload = async () => {
-    const formData = new FormData();
+    // Check if a file is selected
+    if (!files.length) {
+      alert("Please select a file to upload.");
+      return;
+    }
 
+    // Check if a type is selected
+    if (!selectedType) {
+      alert("Please select a type for the file.");
+      return;
+    }
+
+    const formData = new FormData();
     formData.append("file", files[0]);
+    formData.append(
+      "body",
+      JSON.stringify({ name: selectedFileName, type: selectedType })
+    );
 
     try {
-      const response = await fetch("/uploadFile", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "http://document.thibaulthenrion.com/uploadFile",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorMessage = await response.text();
+        throw new Error(
+          `HTTP error! status: ${response.status}, ${errorMessage}`
+        );
       }
-
-      // Reset state after successful upload
+      fetchUploadedFiles();
       setFiles([]);
       setSelectedFileName(null);
+      setSelectedType(""); // Reset selected type
 
-      const uploadedFile = await response.json();
-      setUploadedFiles((prevFiles) => [...prevFiles, uploadedFile]);
-
-      alert("File(s) uploaded successfully!");
+      alert("File uploaded successfully!");
     } catch (error) {
       console.error("Upload failed:", error);
-      alert("Failed to upload file(s).");
+      alert("Failed to upload file.");
     }
   };
 
-  const handleDelete = async (fileName) => {
+  const handleDelete = async (documentId) => {
     try {
-      const response = await fetch(`/deleteFile/${fileName}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `http://document.thibaulthenrion.com/deleteFile/${documentId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // Remove the deleted file from the state
       setUploadedFiles((prevFiles) =>
-        prevFiles.filter((file) => file.name !== fileName)
+        prevFiles.filter((file) => file.id !== documentId)
       );
 
       alert("File deleted successfully!");
@@ -103,6 +137,17 @@ const FileUploadPage = () => {
         )}
       </div>
 
+      <label htmlFor="fileType">Choose a file type:</label>
+      <select
+        id="fileType"
+        value={selectedType}
+        onChange={(e) => setSelectedType(e.target.value)}
+      >
+        <option value="">Select Type</option>
+        <option value="Rapport">Rapport</option>
+        <option value="Cdc">CDC</option>
+      </select>
+
       <button className="upload-button" onClick={handleUpload}>
         Envoyer
       </button>
@@ -112,9 +157,12 @@ const FileUploadPage = () => {
         <ul>
           {uploadedFiles.map((file, index) => (
             <li key={index}>
-              <span>{file.name}</span>
+              <div>ID: {file.id}</div>
+              <span>Name: {file.name}</span>
+              <span>Type: {file.type}</span>
+              <span>Submission Date: {file.submitionDate}</span>
               <button
-                onClick={() => handleDelete(file.name)}
+                onClick={() => handleDelete(file.id)}
                 className="delete-button"
               >
                 Supprimer

@@ -39,8 +39,8 @@ const Login = () => {
       if (response) {
         setIsLoggedIn(true);
         login(response);
-
         console.log("Login Successful:", response);
+        localStorage.setItem("token", response.token); // Store token
         navigate("/profile");
       }
     } catch (error) {
@@ -65,10 +65,13 @@ const Login = () => {
       );
 
       if (!response.ok) {
+        console.error("HTTP error! status:", response.status);
+        console.error("Response Body:", await response.text());
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
+      login(data.userData, data.token);
       return data;
     } catch (error) {
       throw error;
