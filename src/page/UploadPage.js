@@ -120,6 +120,44 @@ const FileUploadPage = () => {
     }
   };
 
+  const handleDownload = async (documentId) => {
+    try {
+      const response = await fetch(
+        `http://document.thibaulthenrion.com/file/${documentId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Get the filename from the Content-Disposition header
+      const contentDisposition = response.headers.get("Content-Disposition");
+      const filename = contentDisposition
+        ? contentDisposition.split("filename=")[1]
+        : "downloaded_file";
+
+      // Create a Blob from the response and initiate download
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Download failed:", error);
+      alert("Failed to download file.");
+    }
+  };
+
   return (
     <div className="containerUpload">
       <header className="header">
@@ -162,6 +200,13 @@ const FileUploadPage = () => {
                 <span>Nom du document: {file.name}</span>
                 <span>Type: {file.type}</span>
                 <span>Date d'ajout: {file.submitionDate}</span>
+                <br />
+                <button
+                  onClick={() => handleDownload(file.id)}
+                  className="download-button"
+                >
+                  Télécharger
+                </button>
                 <br />
                 <button
                   onClick={() => handleDelete(file.id)}
