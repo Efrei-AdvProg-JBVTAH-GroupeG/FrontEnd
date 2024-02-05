@@ -125,51 +125,54 @@ const FileUploadPage = () => {
       <header className="header">
         <h1>File Upload Page</h1>
       </header>
+      <div className="UploadContainer">
+        <div className="dropzone" {...getRootProps()}>
+          <input {...getInputProps()} />
+          {selectedFileName ? (
+            <p style={{ color: "#333", margin: 0 }}>{selectedFileName}</p>
+          ) : (
+            <p style={{ color: "#777", margin: 0 }}>
+              Drag 'n' drop ici, ou clique pour sélectionner ton fichier
+            </p>
+          )}
+        </div>
 
-      <div className="dropzone" {...getRootProps()}>
-        <input {...getInputProps()} />
-        {selectedFileName ? (
-          <p style={{ color: "#333", margin: 0 }}>{selectedFileName}</p>
-        ) : (
-          <p style={{ color: "#777", margin: 0 }}>
-            Drag 'n' drop ici, ou clique pour sélectionner tes fichiers
-          </p>
-        )}
+        <select
+          id="fileType"
+          value={selectedType}
+          onChange={(e) => setSelectedType(e.target.value)}
+        >
+          <option value="">Type de document</option>
+          <option value="Rapport">Rapport</option>
+          <option value="Cdc">CDC</option>
+        </select>
+
+        <button className="upload-button" onClick={handleUpload}>
+          Envoyer
+        </button>
       </div>
-
-      <label htmlFor="fileType">Choose a file type:</label>
-      <select
-        id="fileType"
-        value={selectedType}
-        onChange={(e) => setSelectedType(e.target.value)}
-      >
-        <option value="">Select Type</option>
-        <option value="Rapport">Rapport</option>
-        <option value="Cdc">CDC</option>
-      </select>
-
-      <button className="upload-button" onClick={handleUpload}>
-        Envoyer
-      </button>
 
       <div className="uploaded-files">
         <h2>Fichiers upload:</h2>
-        <ul>
-          {uploadedFiles.map((file, index) => (
-            <li key={index}>
-              <div>ID: {file.id}</div>
-              <span>Name: {file.name}</span>
-              <span>Type: {file.type}</span>
-              <span>Submission Date: {file.submitionDate}</span>
-              <button
-                onClick={() => handleDelete(file.id)}
-                className="delete-button"
-              >
-                Supprimer
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div className="InfoContainer">
+          <ul>
+            {uploadedFiles.map((file, index) => (
+              <li key={index} className="documentInfo">
+                <div>ID: {file.id}</div>
+                <span>Nom du document: {file.name}</span>
+                <span>Type: {file.type}</span>
+                <span>Date d'ajout: {file.submitionDate}</span>
+                <br />
+                <button
+                  onClick={() => handleDelete(file.id)}
+                  className="delete-button"
+                >
+                  Supprimer
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

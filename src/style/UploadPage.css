@@ -51,11 +51,16 @@
   }
   
   .uploaded-files li {
-    border-bottom: 1px solid #ddd;
-    padding: 10px 0;
+    max-width: 800px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
   }
   
   .uploaded-files span {
@@ -72,4 +77,23 @@
     border-radius: 4px;
     margin-left: 10px;
   }
+
+  .UploadContainer{
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .documentInfo{
+    display: flex;
+    flex-direction: column;
+  }
+
+  
   
